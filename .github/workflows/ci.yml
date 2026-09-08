@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - innox-edits
+      - main
+      - master
+  pull_request:
+    branches:
+      - innox-edits
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check application
+        run: node --check index.js
+
+      - name: Build Docker image
+        run: docker build -t node-hello:${{ github.sha }} .
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint Helm chart
+        run: helm lint ./web-app
+
+      - name: Render Helm templates
+        run: helm template web-app ./web-app
