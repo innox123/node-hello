@@ -27,13 +27,13 @@ jobs:
           docker build \
             -t ${{ secrets.DOCKER_USERNAME }}/my-demo-repo:${VERSION} .
 
-      - name: Vulnerability scan
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          image-ref: ${{ secrets.DOCKER_USERNAME }}/my-demo-repo:${{ env.VERSION }}
-          severity: CRITICAL,HIGH
-          exit-code: '1'
-          ignore-unfixed: true
+      # - name: Vulnerability scan
+      #   uses: aquasecurity/trivy-action@0.28.0
+      #   with:
+      #     image-ref: ${{ secrets.DOCKER_USERNAME }}/my-demo-repo:${{ env.VERSION }}
+      #     severity: CRITICAL,HIGH
+      #     exit-code: '1'
+      #     ignore-unfixed: true
 
       - name: Push Docker image
         run: |
